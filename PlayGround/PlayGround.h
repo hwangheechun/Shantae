@@ -1,8 +1,9 @@
 ﻿#pragma once
 #include "../GameFramework/GameNode.h"
-#include "Player.h"
+#include "Shantae.h"
+#include "Ground.h"
 #include "Obstacle.h"
-
+#include "Scene.h"
 #include "EventManager.h"
 
 class PlayGround : public GameNode

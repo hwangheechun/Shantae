@@ -36,6 +36,11 @@ Vector2 FloatRect::GetCenter()
 	return Vector2(left + (right - left) / 2.f, top + (bottom - top) / 2.f);
 }
 
+Vector2 FloatRect::GetTop()
+{
+	return Vector2(left + (right - left) / 2.f, top);
+}
+
 Vector2 FloatRect::GetBottom()
 {
 	return Vector2(left + (right - left) / 2.f, bottom);

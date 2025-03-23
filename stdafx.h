@@ -17,7 +17,7 @@
 
 enum class Pivot : int
 {
-	LeftTop, Center, Bottom
+	LeftTop, Center, Bottom, Top
 };
 
 #include "LibraryHeader.h"
@@ -42,8 +42,8 @@ using namespace UTIL;
 #define WINNAME (LPCTSTR)(TEXT("D2D-Framework"))
 #define WINSTARTX	200
 #define WINSTARTY	50
-#define WINSIZEX	1024		
-#define WINSIZEY	768
+#define WINSIZEX	1600		
+#define WINSIZEY	900
 #define WINSTYLE	WS_CAPTION | WS_SYSMENU
 
 #define RANDOM RandomFunction::GetInstance()

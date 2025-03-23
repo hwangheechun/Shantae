@@ -1,18 +1,18 @@
 ﻿#include "stdafx.h"
 #include "PlayGround.h"
 #include "IEvent.h"
-#include "Bullet.h"
-#include "TestScene.h"
 
 HRESULT PlayGround::Init()
 {
 	GameNode::Init(true);
 
-	Player* player = new Player();
+	Shantae* _shantae = new Shantae();
+	OBJECTMANAGER->AddObject(ObjectType::Shantae, _shantae);
 
-	OBJECTMANAGER->AddObject(ObjectType::Player, player);
+	Ground* _ground = new Ground();
+	OBJECTMANAGER->AddObject(ObjectType::Ground, _ground);
 
-	SCENEMANAGER->AddScene(L"TestScene", new TestScene());
+	//SCENEMANAGER->AddScene(L"IntroScene", new TestScene());
 	/*
 	SCENEMANAGER->AddScene(L"TestScene2", new TestScene2());
 	SCENEMANAGER->AddScene(L"TestScene3", new TestScene3());
@@ -33,6 +33,7 @@ void PlayGround::Update()
 	GameNode::Update();
 
 	OBJECTMANAGER->Update();
+	SCENEMANAGER->Update();
 
 	EventManager::GetInstance()->Update();
 }
@@ -42,6 +43,7 @@ void PlayGround::Render()
 	// 백버퍼 초기화
 	D2DRenderer::GetInstance()->BeginRender(D2D1::ColorF::White);
 	{
+		SCENEMANAGER->Render();
 		OBJECTMANAGER->Render();
 	}
 	D2DRenderer::GetInstance()->EndRender();

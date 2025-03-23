@@ -126,20 +126,17 @@
     <ClInclude Include="stdafx.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlayGround\Player.h">
-      <Filter>PlayGround</Filter>
-    </ClInclude>
     <ClInclude Include="PlayGround\PlayGround.h">
       <Filter>PlayGround</Filter>
     </ClInclude>
-    <ClInclude Include="PlayGround\Bullet.h">
+    <ClInclude Include="PlayGround\Scene.h">
       <Filter>PlayGround</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
+    <ClInclude Include="PlayGround\Shantae.h">
       <Filter>PlayGround</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="PlayGround\Ground.h">
+      <Filter>PlayGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -209,20 +206,22 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlayGround\Player.cpp">
-      <Filter>PlayGround</Filter>
-    </ClCompile>
     <ClCompile Include="PlayGround\PlayGround.cpp">
       <Filter>PlayGround</Filter>
     </ClCompile>
-    <ClCompile Include="PlayGround\Bullet.cpp">
+    <ClCompile Include="PlayGround\Scene.cpp">
       <Filter>PlayGround</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
+    <ClCompile Include="PlayGround\Shantae.cpp">
       <Filter>PlayGround</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="PlayGround\Ground.cpp">
+      <Filter>PlayGround</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Comment.txt">
+      <Filter>PlayGround</Filter>
+    </Text>
   </ItemGroup>
 </Project>

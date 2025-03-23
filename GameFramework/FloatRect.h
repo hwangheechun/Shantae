@@ -19,6 +19,7 @@ public:
 	float GetWidth();
 	float GetHeight();
 	Vector2 GetCenter();
+	Vector2 GetTop();
 	Vector2 GetBottom();
 	Vector2 GetSize();
 	void Update(const Vector2& pos, const Vector2& size, const Pivot& pivot);
@@ -49,6 +50,12 @@ inline FloatRect RectMakePivot(const Vector2& pos, const Vector2& size, const Pi
 		result.top = pos.y - size.y;
 		result.right = pos.x + size.x / 2.f;
 		result.bottom = pos.y;
+		return result;
+	case Pivot::Top:
+		result.left = pos.x - size.x / 2.f;
+		result.top = pos.y;
+		result.right = pos.x + size.x / 2.f;
+		result.bottom = pos.y + size.y / 2.f;
 		return result;
 	}
 	return result;
