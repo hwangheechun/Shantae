@@ -35,6 +35,7 @@ enum class Pivot : int
 #include "TextData.h"
 #include "ObjectManager.h"
 #include "StringHelper.h"
+#include "PlayGround/Camera.h"
 
 using namespace UTIL;
 
@@ -42,8 +43,8 @@ using namespace UTIL;
 #define WINNAME (LPCTSTR)(TEXT("D2D-Framework"))
 #define WINSTARTX	200
 #define WINSTARTY	50
-#define WINSIZEX	1600		
-#define WINSIZEY	900
+#define WINSIZEX	1280	
+#define WINSIZEY	720
 #define WINSTYLE	WS_CAPTION | WS_SYSMENU
 
 #define RANDOM RandomFunction::GetInstance()
@@ -54,6 +55,7 @@ using namespace UTIL;
 #define SCENEMANAGER SceneManager::GetInstance()
 #define TEXTDATA TextData::GetInstance()
 #define OBJECTMANAGER ObjectManager::GetInstance()
+#define CAMERA Camera::GetInstance()
 
 #define SAFE_DELETE(p)		{if(p) {delete(p); (p) = nullptr;}}
 #define SAFE_RELEASE(p)		{if(p) {(p)->Release(); (p) = nullptr;}}

@@ -138,6 +138,12 @@
     <ClInclude Include="PlayGround\Ground.h">
       <Filter>PlayGround</Filter>
     </ClInclude>
+    <ClInclude Include="PlayGround\Camera.h">
+      <Filter>PlayGround</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayGround\UI.h">
+      <Filter>PlayGround</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameFramework\D2DRenderer+Draw.cpp">
@@ -216,6 +222,12 @@
       <Filter>PlayGround</Filter>
     </ClCompile>
     <ClCompile Include="PlayGround\Ground.cpp">
+      <Filter>PlayGround</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayGround\Camera.cpp">
+      <Filter>PlayGround</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayGround\UI.cpp">
       <Filter>PlayGround</Filter>
     </ClCompile>
   </ItemGroup>

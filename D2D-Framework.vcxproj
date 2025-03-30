@@ -153,10 +153,12 @@
     <ClInclude Include="GameFramework\Timer.h" />
     <ClInclude Include="GameFramework\Utils.h" />
     <ClInclude Include="GameFramework\Vector2.h" />
+    <ClInclude Include="PlayGround\Camera.h" />
     <ClInclude Include="PlayGround\Ground.h" />
     <ClInclude Include="PlayGround\PlayGround.h" />
     <ClInclude Include="PlayGround\Scene.h" />
     <ClInclude Include="PlayGround\Shantae.h" />
+    <ClInclude Include="PlayGround\UI.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -180,10 +182,12 @@
     <ClCompile Include="GameFramework\Timer.cpp" />
     <ClCompile Include="GameFramework\Utils.cpp" />
     <ClCompile Include="GameFramework\Vector2.cpp" />
+    <ClCompile Include="PlayGround\Camera.cpp" />
     <ClCompile Include="PlayGround\Ground.cpp" />
     <ClCompile Include="PlayGround\PlayGround.cpp" />
     <ClCompile Include="PlayGround\Scene.cpp" />
     <ClCompile Include="PlayGround\Shantae.cpp" />
+    <ClCompile Include="PlayGround\UI.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>

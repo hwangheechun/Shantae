@@ -4,7 +4,6 @@
 #include <string>
 
 Shantae::Shantae()
-	: _gauge(0.f)
 {
 	Init();
 }
@@ -16,16 +15,17 @@ Shantae::~Shantae()
 void Shantae::Init()
 {
 	_name = L"Shantae";
-	_position = Vector2(WINSIZEX / 2 - 500, WINSIZEY / 2 + 100);
-	_size = Vector2(70, 100);
+	_position = Vector2(WINSIZEX / 2 - 6000, WINSIZEY / 2 + 300);
+	_size = Vector2(60, 100);
 	_rect = RectMakePivot(_position, _size, Pivot::Center);	// 히트박스
 	_active = true;
 
-	// 커스텀 변수들
-	_direction = Vector2(1, 0);
-	_gaugeRect = RectMakePivot(_position + Vector2(0, 60), Vector2(40.f, 10.f), Pivot::Center);
-
-	_playerImage = IMAGEMANAGER->AddFrameImage(L"Shantae Idle", L"Resources/shantae_Idle.png", 16, 1);
+	 IMAGEMANAGER->AddFrameImage(L"Shantae Idle_Right", L"Resources/shantae_idle2.png", 16, 1);
+	 _playerImage = IMAGEMANAGER->AddFrameImage(L"Shantae Idle_Left", L"Resources/shantae_idle1.png", 16, 1);
+	 IMAGEMANAGER->AddFrameImage(L"Shantae Run_Left", L"Resources/shantae_run1.png", 16, 1);
+	 IMAGEMANAGER->AddFrameImage(L"Shantae Run_Right", L"Resources/shantae_run2.png", 16, 1);
+	 IMAGEMANAGER->AddFrameImage(L"Shantae Jump_Left", L"Resources/shantae_jump1.png", 8, 1);
+	 IMAGEMANAGER->AddFrameImage(L"Shantae Jump_Right", L"Resources/shantae_jump2.png", 8, 1);
 	//_playerImage = IMAGEMANAGER->FindImage(L"Player Idle");
 	//_playerImage = IMAGEMANAGER->AddImage(L"Player Idle", L"Resources/Idle.png");	// 일반 이미지
 
@@ -34,6 +34,7 @@ void Shantae::Init()
 	_playerAnimation->SetPlayFrame(0, 15, false, true);
 	_playerAnimation->SetFPS(10);	// 조정하면서 살펴보기
 	_playerAnimation->Start();		// 이거 안 하면 시작 안 함
+	
 
 	//_ground = dynamic_cast<Ground*>(OBJECTMANAGER->FindObject(ObjectType::Ground, L"Ground"));
 }
@@ -45,41 +46,101 @@ void Shantae::Release()
 void Shantae::Update()
 {
 	_gravity += 2.5f;	//중력 가속
+	_playerAnimation->Init(_playerImage->GetWidth(), _playerImage->GetHeight(), _playerImage->GetFrameSize().x, _playerImage->GetFrameSize().y);
+
+	if(!_isOnGround)
+		Move(Vector2(0.0f, _gravity), 10);
+
+	if (IsCollide(_rect.GetBottom(), OBJECTMANAGER->FindObject(ObjectType::Ground, L"Ground"), Pivot::Top))
+	{
+		_isOnGround = true;
+		_rect.bottom = OBJECTMANAGER->FindObject(ObjectType::Ground, L"Ground")->GetPosition().y;
+	}
 
 	if (KEYMANAGER->IsStayKeyDown(VK_LEFT))		//좌
 	{
-		if (_position.x > 0)
-		{
-			Move(Vector2(-35, 0), 10);
-			
-		}
-		else _position.x = WINSIZEX;
-	}
-	if (KEYMANAGER->IsStayKeyDown(VK_RIGHT))	//우
-	{
-		if (_position.x < WINSIZEX)
-		{
-			Move(Vector2(35, 0), 10);
-			
-		}
-		else _position.x = 0;
-	}
+		if (_isOnGround)
+			_playerMode = ShantaeState::RUN_LEFT;
+		else
+			_playerMode = ShantaeState::JUMP_LEFT;
+		_isRight = false;
+		Move(Vector2(-35, 0), 10);
 
-	if (_position.y + _size.y / 2 >= OBJECTMANAGER->FindObject(ObjectType::Ground, L"Ground")->GetPosition().y)
+		if (KEYMANAGER->IsOnceKeyDown(VK_SPACE))	//점프
+		{
+			_isOnGround = false;
+			_gravity = -90.0f;
+		}
+	}
+	else if (KEYMANAGER->IsStayKeyDown(VK_RIGHT))	//우
 	{
-		_isOnGround = true;
+		if (_isOnGround)
+			_playerMode = ShantaeState::RUN_RIGHT;
+		else
+			_playerMode = ShantaeState::JUMP_RIGHT;
+		_isRight = true;
+		Move(Vector2(35, 0), 10);
 
-		if (KEYMANAGER->IsOnceKeyDown(VK_SPACE))
+		if (KEYMANAGER->IsOnceKeyDown(VK_SPACE))	//점프
+		{
+			_isOnGround = false;
+			_gravity = -90.0f;
+		}
+	}
+	else
+	{
+		if (_isRight)
+		{
+			if(_isOnGround)
+				_playerMode = ShantaeState::STAND_RIGHT;
+			else
+				_playerMode = ShantaeState::JUMP_RIGHT;
+		}
+		else
+		{
+			if (_isOnGround)
+				_playerMode = ShantaeState::STAND_LEFT;
+			else
+				_playerMode = ShantaeState::JUMP_LEFT;
+		}
+		
+
+		if (KEYMANAGER->IsOnceKeyDown(VK_SPACE))	//점프
 		{
 			_isOnGround = false;
 			_gravity = -90.0f;
 		}
 	}
 
-	if(!IsCollide(OBJECTMANAGER->FindObject(ObjectType::Ground, L"Ground")) && !_isOnGround)
-		Move(Vector2(0.0f, _gravity), 10);
-	// 0 -> 1 -> 2 / SetFPS를 통한 속도 반영
+	//_rect = RectMakePivot(_position, _size, Pivot::Center);
+	
 	_playerAnimation->FrameUpdate(TIMEMANAGER->GetElapsedTime());
+
+	switch (_playerMode)
+	{
+	case ShantaeState::STAND_LEFT:
+		_playerImage = IMAGEMANAGER->FindImage(L"Shantae Idle_Left");
+		_playerAnimation->SetPlayFrame(0, 15, false, true);
+		break;
+	case ShantaeState::STAND_RIGHT:
+		_playerImage = IMAGEMANAGER->FindImage(L"Shantae Idle_Right");
+		_playerAnimation->SetPlayFrame(0, 15, false, true);
+		break;
+	case ShantaeState::RUN_LEFT:
+		_playerImage = IMAGEMANAGER->FindImage(L"Shantae Run_Left");
+		_playerAnimation->SetPlayFrame(0, 15, false, true);
+		break;
+	case ShantaeState::RUN_RIGHT:
+		_playerImage = IMAGEMANAGER->FindImage(L"Shantae Run_Right");
+		_playerAnimation->SetPlayFrame(0, 15, false, true);
+		break;
+	case ShantaeState::JUMP_LEFT:
+		_playerImage = IMAGEMANAGER->FindImage(L"Shantae Jump_Left");
+		break;
+	case ShantaeState::JUMP_RIGHT:
+		_playerImage = IMAGEMANAGER->FindImage(L"Shantae Jump_Right");
+		break;
+	}
 }
 
 void Shantae::Render()
@@ -87,32 +148,61 @@ void Shantae::Render()
 	//_playerImage->FrameRender(_rect.GetCenter(), 0, 0);
 	//_playerImage->Render(_rect.GetCenter());	// 일반 이미지
 	//_D2DRenderer->FillRectangle(_rect, D2DRenderer::DefaultBrush::White);
-	_D2DRenderer->DrawRectangle(_rect, D2DRenderer::DefaultBrush::Black, 2.0f);
-	_playerImage->AniRender(_rect.GetCenter() + Vector2(0, -10), _playerAnimation, 1.2f);
+	_D2DRenderer->DrawRectangle(CAMERA->GetRelativeRect(_rect), D2DRenderer::DefaultBrush::Black, 2.0f);
+	_D2DRenderer->DrawRectangle(_rect, D2DRenderer::DefaultBrush::Black, 5.0f);
+	//_D2DRenderer->DrawRectangle(CAMERA->GetRelativeRect(_rect), D2DRenderer::DefaultBrush::Black, 2.0f);
+	
+	_D2DRenderer->RenderText(100, 100, to_wstring((int)_playerMode), 15);
 
-	_D2DRenderer->RenderText(1060, 180, L"땅?" + to_wstring(_isOnGround) + L"점프?" + to_wstring(_isJumping), 15);
+	switch (_playerMode)
+	{
+	case ShantaeState::STAND_LEFT:
+	case ShantaeState::STAND_RIGHT:
+		_playerImage->AniRender(CAMERA->GetRelativeVector2(_position + Vector2(0, -30)), _playerAnimation, 3.0f);
+		_playerAnimation->SetFPS(10);
+		_D2DRenderer->RenderText(200, 100, L"서 있음", 15);
+		break;
+	case ShantaeState::RUN_LEFT :
+	case ShantaeState::RUN_RIGHT:
+		_playerImage->AniRender(CAMERA->GetRelativeVector2(_position + Vector2(0, -30)), _playerAnimation, 3.4f);
+		_playerAnimation->SetFPS(15);
+		_D2DRenderer->RenderText(200, 100, L"달림", 15);
+		break;
+	case ShantaeState::JUMP_LEFT:
+	case ShantaeState::JUMP_RIGHT:
+		_playerImage->AniRender(CAMERA->GetRelativeVector2(_position + Vector2(0, -30)), _playerAnimation, 2.0f);
+		_playerAnimation->SetFPS(15);
+		_D2DRenderer->RenderText(200, 100, L"점프", 15);
+		break;
+
+	}
 }
 
 void Shantae::Move(Vector2 moveDirection, float speed)
 {
-	// 예시 1
-	/*
-	_position.x += moveDirection.x * speed * TIMEMANAGER->GetElapsedTime();
-	_position.y += moveDirection.y * speed * TIMEMANAGER->GetElapsedTime();
-	_rect = RectMakePivot(_position, _size, Pivot::Center);
-	*/
-
-	// 예시 2
 	_position += moveDirection * speed * TIMEMANAGER->GetElapsedTime();	// == deltaTime
 	_rect = RectMakePivot(_position, _size, Pivot::Center);
 }
 
-bool Shantae::IsCollide(GameObject* object)	//충돌했다면
+bool Shantae::IsCollide(Vector2 contactPoint, GameObject* object, Pivot objectPivotType)	//충돌했다면
 {
-	if (_position.x > object->GetPosition().x - object->GetSize().x / 2 && _position.x < object->GetPosition().x + object->GetSize().x / 2
-		&& _position.y > object->GetPosition().y - object->GetSize().y / 2 && _position.y < object->GetPosition().y + object->GetSize().y / 2)
+	switch (objectPivotType)
 	{
-		return true;
+	case Pivot::Center :
+		if (contactPoint.x > object->GetPosition().x - object->GetSize().x / 2 && contactPoint.x < object->GetPosition().x + object->GetSize().x / 2
+			&& contactPoint.y > object->GetPosition().y - object->GetSize().y / 2 && contactPoint.y < object->GetPosition().y + object->GetSize().y / 2)
+		{
+			return true;
+		}
+		else return false;
+		break;
+	case Pivot::Top :
+		if (contactPoint.x > object->GetPosition().x - object->GetSize().x / 2 && contactPoint.x < object->GetPosition().x + object->GetSize().x / 2
+			&& contactPoint.y > object->GetPosition().y && contactPoint.y < object->GetPosition().y + object->GetSize().y)
+		{
+			return true;
+		}
+		else return false;
+		break;
 	}
-	else return false;
 }

@@ -2,6 +2,8 @@
 #include "../GameFramework/GameNode.h"
 #include "Shantae.h"
 #include "Ground.h"
+#include "UI.h"
+#include "Camera.h"
 #include "Obstacle.h"
 #include "Scene.h"
 #include "EventManager.h"

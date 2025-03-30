@@ -12,6 +12,14 @@ HRESULT PlayGround::Init()
 	Ground* _ground = new Ground();
 	OBJECTMANAGER->AddObject(ObjectType::Ground, _ground);
 
+	UI* _ui = new UI();
+	OBJECTMANAGER->AddObject(ObjectType::UI, _ui);
+
+	CAMERA->ChangeTarget(OBJECTMANAGER->FindObject(ObjectType::Shantae, L"Shantae"));
+	CAMERA->SetCameraMode(CameraState::TARGET);
+	////CAMERA->SetMapSize(Vector2(_bgImage->GetWidth(), WINSIZEY));
+	
+
 	//SCENEMANAGER->AddScene(L"IntroScene", new TestScene());
 	/*
 	SCENEMANAGER->AddScene(L"TestScene2", new TestScene2());
@@ -34,6 +42,7 @@ void PlayGround::Update()
 
 	OBJECTMANAGER->Update();
 	SCENEMANAGER->Update();
+	CAMERA->Update();
 
 	EventManager::GetInstance()->Update();
 }

@@ -48,8 +48,14 @@ _D2DRenderer->RenderText(20, 810, L"캐릭터 보이는 위치 x " + to_wstring(CAMERA->
 
 
 
-//플랫폼
+//땅
 -- 위치와 카메라 위치 --
 _D2DRenderer->RenderText(CAMERA->GetRelativeVector2(_position).x, CAMERA->GetRelativeVector2(_position).y, to_wstring(_beforeBlock->GetPosition().y), 15);
 _D2DRenderer->RenderText(_position.x, _position.y, to_wstring(_position.y), 15);
+
+//카메라
+_D2DRenderer->RenderText(500, 130, L"카메라왼쪽" + to_wstring(CAMERA->GetrcTop().x) + L"카메라위" + to_wstring(CAMERA->GetrcTop().y), 15);
+_D2DRenderer->RenderText(500, 180, L"카메라오른쪽" + to_wstring(CAMERA->GetrcBottom().x) + L"카메라아래" + to_wstring(CAMERA->GetrcBottom().y), 15);
+_D2DRenderer->RenderText(600, 80, L"카메라 x?" + to_wstring(CAMERA->GetPosition().x), 15);
+_D2DRenderer->RenderText(850, 80, L"카메라?" + to_wstring(CAMERA->GetPosition().y), 15);
 

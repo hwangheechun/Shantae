@@ -1,6 +1,16 @@
 #pragma once
 #include "GameObject.h"
 
+enum class ShantaeState : int
+{
+	STAND_LEFT,
+	STAND_RIGHT,
+	RUN_LEFT,
+	RUN_RIGHT,
+	JUMP_LEFT,
+	JUMP_RIGHT,
+};
+
 class Shantae : public GameObject
 {
 public:
@@ -15,17 +25,14 @@ public:
 	void Move(Vector2 moveDirection, float speed);
 	//void MoveAngle(float angle, float speed);
 
-	Vector2 _direction;
-	Vector2 GetDirection() { return _direction; };
-
-	float _gauge;
-	FloatRect _gaugeRect;
-
+	//캐릭터 조작
+	ShantaeState _playerMode = ShantaeState::STAND_RIGHT;
 	Image* _playerImage = nullptr;
 	Animation* _playerAnimation = nullptr;
+	bool _isRight = false;
 
 	//충돌 관련
-	bool IsCollide(GameObject* Object);
+	bool IsCollide(Vector2 contactPoint,GameObject* object, Pivot objectPivotType);
 
 	//중력 관련
 	float _gravity = 0.f;
